@@ -1,1 +1,1 @@
-# Client application
+![Client logo](../../resources/client-logo.png)

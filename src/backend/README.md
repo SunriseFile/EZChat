@@ -1,1 +1,1 @@
-# Backend application
+![Server logo](../../resources/server-logo.png)
