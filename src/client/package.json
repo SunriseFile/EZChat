@@ -1,24 +1,25 @@
 {
-  "name": "client",
-  "version": "1.0.0",
-  "description": "![Client logo](../../resources/client-logo.png)",
+  "name": "ez-chat",
+  "version": "0.0.0",
+  "description": "EZChat client",
+  "author": "Sunrise File",
+  "license": "MIT",
   "main": "index.js",
   "scripts": {
     "start": "electron-webpack dev",
     "build": "electron-webpack && electron-builder"
   },
-  "author": "",
-  "license": "MIT",
-  "devDependencies": {
-    "electron": "^3.0.10",
-    "electron-builder": "^20.38.2",
-    "electron-webpack": "^2.6.1",
-    "vue": "^2.5.17",
-    "vue-loader": "^15.4.2",
-    "vue-template-compiler": "^2.5.17",
-    "webpack": "^4.27.1"
-  },
   "dependencies": {
-    "source-map-support": "^0.5.9"
+    "electron": "3.0.10",
+    "vue": "2.5.17"
+  },
+  "devDependencies": {
+    "css-loader": "2.0.0",
+    "electron-builder": "20.38.2",
+    "electron-webpack": "2.6.1",
+    "source-map-support": "0.5.9",
+    "vue-loader": "15.4.2",
+    "vue-template-compiler": "2.5.17",
+    "webpack": "4.27.1"
   }
 }
