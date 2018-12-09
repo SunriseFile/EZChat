@@ -1,14 +1,20 @@
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.vue$/,
-        use: 'vue-loader'
-      }
+    mode: 'development',
+    module: {
+        rules: [
+            {
+                test: /\.vue$/,
+                loader: 'vue-loader'
+                // options: {
+                //     loaders: {
+                //         scss: 'vue-style-loader!css-loader!sass-loader', // <style lang="scss">
+                //     },
+                // }
+            }
+        ]
+    },
+    plugins: [
+        new VueLoaderPlugin()
     ]
-  },
-  plugins: [
-    new VueLoaderPlugin()
-  ]
 }
