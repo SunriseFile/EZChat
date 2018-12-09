@@ -148,7 +148,7 @@ namespace EZChat.Master.Identity
                 throw new ArgumentNullException(nameof(user));
             }
 
-            // user.Id = await _userRepository.InsertAsync(user);
+            user.Id = await _userRepository.InsertAsync(user);
 
             return IdentityResult.Success;
         }
@@ -162,7 +162,7 @@ namespace EZChat.Master.Identity
                 throw new ArgumentNullException(nameof(user));
             }
 
-            // await _userRepository.UpdateAsync(user);
+            await _userRepository.UpdateAsync(user);
 
             return IdentityResult.Success;
         }
@@ -176,7 +176,7 @@ namespace EZChat.Master.Identity
                 throw new ArgumentNullException(nameof(user));
             }
 
-            // wait _userRepository.DeleteAsync(user);
+            await _userRepository.DeleteAsync(user);
 
             return IdentityResult.Success;
         }
@@ -195,8 +195,7 @@ namespace EZChat.Master.Identity
                 throw new ArgumentException("Invalid long type", nameof(userId));
             }
 
-            // return await _userRepository.GetByIdAsync(id);
-            return null;
+            return await _userRepository.GetByIdAsync(id);
         }
 
         public async Task<AppUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
@@ -208,8 +207,7 @@ namespace EZChat.Master.Identity
                 throw new ArgumentNullException(nameof(normalizedUserName));
             }
 
-            // return await _userRepository.GetByNormalizedUserNameAsync(normalizedUserName);
-            return null;
+            return await _userRepository.GetByNormalizedUserNameAsync(normalizedUserName);
         }
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace EZChat.Master.Database
 {
-    public static class AspNetCoreDatabaseServiceExtensions
+    public static class AspNetCoreDatabaseExtensions
     {
         public static IServiceCollection AddEzChatDatabase(this IServiceCollection services)
         {
