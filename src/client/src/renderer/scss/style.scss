@@ -1,0 +1,28 @@
+//colors
+$btn-color: #0078ff;
+$message-color: #47536d;
+$grey: #6d7582;
+$your-msg-color: #566eff;
+
+.messageInput{
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  background: transparent;
+  border: 2px solid $message-color;
+  outline: none;
+  color: #fff;
+  &:focus{
+    border-color: $btn-color;
+  }
+}
+
+.message{
+  background-color: $message-color;
+  padding: 10px 25px;
+  border-radius: 5px;
+  display: table;
+  text-align: center;
+  color: #fff;
+  margin-bottom: 15px;
+}
