@@ -36,7 +36,7 @@ namespace EZChat.Master.Database.Sql
 
             if (_values.ContainsKey(column))
             {
-                throw new InvalidOperationException($"Column {column} already exists");
+                throw new InvalidOperationException($"Column \"{column}\" already exists");
             }
 
             _values.Add(column, value);
@@ -57,9 +57,12 @@ namespace EZChat.Master.Database.Sql
                 throw new Exception("Empty data");
             }
 
-            var values = string.Join(", ", _values.Select(x => $"{x.Key} = {x.Value}"));
+            var values = string.Join(", ", _values.Select(x => $"[{x.Key}] = {x.Value}"));
             var where = string.Join(" AND ", _whereConditions.Select(x => x.ToString()));
-            var sql = $"UPDATE [{_table}] SET {values}" + (string.IsNullOrWhiteSpace(where) ? string.Empty : $" {where}");
+
+            where = string.IsNullOrWhiteSpace(where) ? string.Empty : $" WHERE {where}";
+
+            var sql = $"UPDATE [{_table}] SET {values}{where}";
 
             return sql;
         }

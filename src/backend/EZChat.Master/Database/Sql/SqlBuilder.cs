@@ -8,7 +8,7 @@ namespace EZChat.Master.Database.Sql
         public const string Gt = ">";
         public const string Gte = ">=";
         public const string Ne = "<>";
-        public const string Like = "like";
+        public const string Like = "LIKE";
 
         public abstract string ToSql();
     }

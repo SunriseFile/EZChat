@@ -34,7 +34,7 @@ namespace EZChat.Master.Database.Sql
 
             if (_values.ContainsKey(column))
             {
-                throw new InvalidOperationException($"Column {column} already exists");
+                throw new InvalidOperationException($"Column \"{column}\" already exists");
             }
 
             _values.Add(column, value);

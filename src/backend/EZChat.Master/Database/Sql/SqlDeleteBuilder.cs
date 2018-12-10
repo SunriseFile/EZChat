@@ -29,7 +29,10 @@ namespace EZChat.Master.Database.Sql
         public override string ToSql()
         {
             var where = string.Join(" AND ", _whereConditions.Select(x => x.ToString()));
-            var sql = $"DELETE FROM [{_table}]" + (string.IsNullOrWhiteSpace(where) ? string.Empty : $" {where}");
+
+            where = string.IsNullOrWhiteSpace(where) ? string.Empty : $" WHERE {where}";
+
+            var sql = $"DELETE FROM [{_table}]{where}";
 
             return sql;
         }
