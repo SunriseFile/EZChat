@@ -11,8 +11,8 @@ namespace EZChat.Master
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddEzChatIdentity()
-                    .AddEzChatDatabase();
+            services.AddEzChatDatabase()
+                    .AddEzChatIdentity();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

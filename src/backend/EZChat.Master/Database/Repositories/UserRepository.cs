@@ -2,29 +2,14 @@ using System.Threading.Tasks;
 
 using Dapper;
 
-using EZChat.Master.Database.Sql;
+using EZChat.Master.Database.QueryObject;
 using EZChat.Master.Identity;
 
 namespace EZChat.Master.Database.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private const string TableName = "users";
         private readonly IDbConnectionFactory _factory;
-
-        private string Id => nameof(AppUser.Id);
-        private string UserName => nameof(AppUser.UserName);
-        private string NormalizedUserName => nameof(AppUser.NormalizedUserName);
-        private string FirstName => nameof(AppUser.FirstName);
-        private string LastName => nameof(AppUser.LastName);
-        private string PasswordHash => nameof(AppUser.PasswordHash);
-
-        private string IdParam => $"@{Id}";
-        private string UserNameParam => $"@{UserName}";
-        private string NormalizedUserNameParam => $"@{NormalizedUserName}";
-        private string FirstNameParam => $"@{FirstName}";
-        private string LastNameParam => $"@{LastName}";
-        private string PasswordHashParam => $"@{PasswordHash}";
 
         public UserRepository(IDbConnectionFactory factory)
         {
@@ -35,18 +20,8 @@ namespace EZChat.Master.Database.Repositories
         {
             using (var connection = await _factory.OpenAsync())
             {
-                var insert = new SqlInsertBuilder(TableName)
-                             .Values(UserName, UserNameParam)
-                             .Values(NormalizedUserName, NormalizedUserNameParam)
-                             .Values(FirstName, FirstNameParam)
-                             .Values(LastName, LastNameParam)
-                             .Values(PasswordHash, PasswordHashParam);
-
-                var join = new SqlJoinBuilder()
-                           .Append(insert)
-                           .Append(new SqlCustomBuilder("SELECT CAST(SCOPE_IDENTITY() AS BIGINT)"));
-
-                return await connection.QuerySingleAsync<long>(join.ToSql(), user);
+                var sql = AppUserQueryObject.Insert(user);
+                return await connection.QuerySingleAsync<long>(sql);
             }
         }
 
@@ -54,15 +29,8 @@ namespace EZChat.Master.Database.Repositories
         {
             using (var connection = await _factory.OpenAsync())
             {
-                var update = new SqlUpdateBuilder(TableName)
-                             .Set(UserName, UserNameParam)
-                             .Set(NormalizedUserName, NormalizedUserNameParam)
-                             .Set(FirstName, FirstNameParam)
-                             .Set(LastName, LastNameParam)
-                             .Set(PasswordHash, PasswordHashParam)
-                             .Where(Id, SqlBuilder.Eq, IdParam);
-
-                await connection.ExecuteAsync(update.ToSql(), user);
+                var sql = AppUserQueryObject.Update(user);
+                await connection.ExecuteAsync(sql);
             }
         }
 
@@ -70,8 +38,8 @@ namespace EZChat.Master.Database.Repositories
         {
             using (var connection = await _factory.OpenAsync())
             {
-                var delete = new SqlDeleteBuilder(TableName).Where(Id, SqlBuilder.Eq, IdParam);
-                await connection.ExecuteAsync(delete.ToSql(), user);
+                var sql = AppUserQueryObject.Delete(user);
+                await connection.ExecuteAsync(sql);
             }
         }
 
@@ -79,8 +47,8 @@ namespace EZChat.Master.Database.Repositories
         {
             using (var connection = await _factory.OpenAsync())
             {
-                var select = new SqlSelectBuilder(TableName).Where(Id, SqlBuilder.Eq, $"@{nameof(id)}");
-                return await connection.QuerySingleOrDefaultAsync<AppUser>(select.ToSql(), new { id });
+                var sql = AppUserQueryObject.ById(id);
+                return await connection.QuerySingleOrDefaultAsync<AppUser>(sql);
             }
         }
 
@@ -88,8 +56,8 @@ namespace EZChat.Master.Database.Repositories
         {
             using (var connection = await _factory.OpenAsync())
             {
-                var select = new SqlSelectBuilder(TableName).Where(NormalizedUserName, SqlBuilder.Eq, $"@{nameof(normalizedUserName)}");
-                return await connection.QuerySingleOrDefaultAsync<AppUser>(select.ToSql(), new { normalizedUserName });
+                var sql = AppUserQueryObject.ByNormalizedUserName(normalizedUserName);
+                return await connection.QuerySingleOrDefaultAsync<AppUser>(sql);
             }
         }
     }
