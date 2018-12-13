@@ -1,4 +1,4 @@
-namespace EZChat.Master.Identity
+namespace EZChat.Master.Identity.Models
 {
     public class AppRole
     {

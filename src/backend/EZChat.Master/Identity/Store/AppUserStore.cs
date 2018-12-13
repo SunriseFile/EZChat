@@ -3,10 +3,11 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using EZChat.Master.Database.Repositories;
+using EZChat.Master.Identity.Models;
 
 using Microsoft.AspNetCore.Identity;
 
-namespace EZChat.Master.Identity
+namespace EZChat.Master.Identity.Store
 {
     public class AppUserStore : IUserPasswordStore<AppUser>
     {

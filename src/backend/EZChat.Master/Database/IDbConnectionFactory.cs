@@ -5,7 +5,6 @@ namespace EZChat.Master.Database
 {
     public interface IDbConnectionFactory
     {
-        IDbConnection Open();
         Task<IDbConnection> OpenAsync();
     }
 }

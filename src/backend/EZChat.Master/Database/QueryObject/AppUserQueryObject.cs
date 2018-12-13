@@ -1,4 +1,6 @@
+using EZChat.Master.Database.DTO;
 using EZChat.Master.Identity;
+using EZChat.Master.Identity.Models;
 
 using SqlKata;
 
@@ -11,15 +13,14 @@ namespace EZChat.Master.Database.QueryObject
         public static string Insert(AppUser user)
         {
             return new Query(TableName)
-                   // TODO: [Id] field in INSERT, hmmm, maybe DTO?
-                   .AsInsert(user, true)
+                   .AsInsert(new AppUserDto(user), true)
                    .CompileQuery();
         }
 
         public static string Update(AppUser user)
         {
             return new Query(TableName)
-                   .AsUpdate(user)
+                   .AsUpdate(new AppUserDto(user))
                    .Where(nameof(AppUser.Id), "=", user.Id)
                    .CompileQuery();
         }
