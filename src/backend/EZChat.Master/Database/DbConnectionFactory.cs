@@ -1,8 +1,9 @@
 using System.Data;
-using System.Data.SqlClient;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Configuration;
+
+using Npgsql;
 
 namespace EZChat.Master.Database
 {
@@ -17,7 +18,7 @@ namespace EZChat.Master.Database
 
         public async Task<IDbConnection> OpenAsync()
         {
-            var connection = new SqlConnection(_connectionString);
+            var connection = new NpgsqlConnection(_connectionString);
 
             await connection.OpenAsync();
 

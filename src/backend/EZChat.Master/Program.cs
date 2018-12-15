@@ -4,6 +4,9 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
+using Serilog;
+using Serilog.Events;
+
 namespace EZChat.Master
 {
     public class Program
@@ -17,8 +20,9 @@ namespace EZChat.Master
         {
             return new WebHostBuilder().UseContentRoot(Directory.GetCurrentDirectory())
                                        .UseKestrel()
-                                       .ConfigureAppConfiguration(ConfigureConfiguration())
                                        .UseStartup<Startup>()
+                                       .ConfigureAppConfiguration(ConfigureConfiguration())
+                                       .UseSerilog(ConfigureLogger())
                                        .Build();
         }
 
@@ -30,6 +34,19 @@ namespace EZChat.Master
 
                 config.AddJsonFile("appsettings.json", false, false)
                       .AddJsonFile($"appsettings.{env.EnvironmentName}.json", false, false);
+            };
+        }
+
+        private static Action<WebHostBuilderContext, LoggerConfiguration> ConfigureLogger()
+        {
+            return (context, logger) =>
+            {
+                logger.MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                      .MinimumLevel.Override("System", LogEventLevel.Warning)
+                      .Enrich.FromLogContext()
+                      .WriteTo.Console()
+                      .WriteTo.RollingFile("logs/events-{Date}.log")
+                      .ReadFrom.Configuration(context.Configuration);
             };
         }
     }

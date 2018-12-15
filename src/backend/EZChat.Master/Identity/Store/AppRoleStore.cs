@@ -12,7 +12,7 @@ namespace EZChat.Master.Identity.Store
     {
         public void Dispose()
         {
-            throw new NotImplementedException();
+            // ignore
         }
 
         public Task<IdentityResult> CreateAsync(AppRole role, CancellationToken cancellationToken)

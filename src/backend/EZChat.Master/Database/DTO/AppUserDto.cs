@@ -1,4 +1,3 @@
-using EZChat.Master.Identity;
 using EZChat.Master.Identity.Models;
 
 namespace EZChat.Master.Database.DTO

@@ -1,5 +1,4 @@
 using EZChat.Master.Database.DTO;
-using EZChat.Master.Identity;
 using EZChat.Master.Identity.Models;
 
 using SqlKata;
