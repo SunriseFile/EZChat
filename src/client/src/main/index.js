@@ -7,7 +7,10 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 app.on('ready', () => {
   let window = new BrowserWindow({
     width: 1024,
-    backgroundColor: '#31394c'
+    minWidth: 400,
+    minHeight: 620,
+    backgroundColor: '#111012',
+    icon: path.join(__dirname + "/app_icon.ico")
   })
   if (isDevelopment) {
     window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`)
