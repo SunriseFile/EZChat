@@ -10,17 +10,19 @@ namespace EZChat.Master.Database.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly IDbConnectionFactory _factory;
+        private readonly AppUserQueryObject _queryObject;
 
-        public UserRepository(IDbConnectionFactory factory)
+        public UserRepository(IDbConnectionFactory factory, AppUserQueryObject queryObject)
         {
             _factory = factory;
+            _queryObject = queryObject;
         }
 
         public async Task<long> InsertAsync(AppUser user)
         {
             using (var connection = await _factory.OpenAsync())
             {
-                var sql = AppUserQueryObject.Insert(user);
+                var sql = _queryObject.Insert(user);
                 return await connection.QuerySingleAsync<long>(sql);
             }
         }
@@ -29,7 +31,7 @@ namespace EZChat.Master.Database.Repositories
         {
             using (var connection = await _factory.OpenAsync())
             {
-                var sql = AppUserQueryObject.Update(user);
+                var sql = _queryObject.Update(user);
                 await connection.ExecuteAsync(sql);
             }
         }
@@ -38,7 +40,7 @@ namespace EZChat.Master.Database.Repositories
         {
             using (var connection = await _factory.OpenAsync())
             {
-                var sql = AppUserQueryObject.Delete(user);
+                var sql = _queryObject.Delete(user);
                 await connection.ExecuteAsync(sql);
             }
         }
@@ -47,7 +49,7 @@ namespace EZChat.Master.Database.Repositories
         {
             using (var connection = await _factory.OpenAsync())
             {
-                var sql = AppUserQueryObject.ById(id);
+                var sql = _queryObject.ById(id);
                 return await connection.QuerySingleOrDefaultAsync<AppUser>(sql);
             }
         }
@@ -56,7 +58,7 @@ namespace EZChat.Master.Database.Repositories
         {
             using (var connection = await _factory.OpenAsync())
             {
-                var sql = AppUserQueryObject.ByNormalizedUserName(normalizedUserName);
+                var sql = _queryObject.ByNormalizedUserName(normalizedUserName);
                 return await connection.QuerySingleOrDefaultAsync<AppUser>(sql);
             }
         }

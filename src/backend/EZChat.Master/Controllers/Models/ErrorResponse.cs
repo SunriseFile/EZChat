@@ -9,9 +9,9 @@ namespace EZChat.Master.Controllers.Models
     {
         public string Error { get; set; }
 
-        public ErrorResponse(ModelStateDictionary modelState)
+        public ErrorResponse(string error)
         {
-            Error = modelState.Values.FirstOrDefault()?.Errors.FirstOrDefault()?.ErrorMessage;
+            Error = error;
         }
 
         public ErrorResponse(IdentityResult identityResult)
@@ -19,9 +19,9 @@ namespace EZChat.Master.Controllers.Models
             Error = identityResult.Errors.FirstOrDefault()?.Description;
         }
 
-        public ErrorResponse(string error)
+        public ErrorResponse(ModelStateDictionary modelState)
         {
-            Error = error;
+            Error = modelState.Values.FirstOrDefault()?.Errors.FirstOrDefault()?.ErrorMessage;
         }
     }
 }

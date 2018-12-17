@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
 
 using EZChat.Master.Controllers.Models;
@@ -68,8 +67,7 @@ namespace EZChat.Master.Controllers
             var user = new AppUser
             {
                 UserName = model.UserName,
-                FirstName = model.FirstName,
-                LastName = model.LastName
+                DisplayName = model.DisplayName
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -106,11 +104,8 @@ namespace EZChat.Master.Controllers
         [Compare(nameof(Password), ErrorMessage = "passwords do not match")]
         public string PasswordConfirm { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "first name is required")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "display name is required")]
         [StringLength(256)]
-        public string FirstName { get; set; }
-
-        [StringLength(256)]
-        public string LastName { get; set; }
+        public string DisplayName { get; set; }
     }
 }

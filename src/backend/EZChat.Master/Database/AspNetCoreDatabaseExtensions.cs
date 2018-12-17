@@ -1,3 +1,4 @@
+using EZChat.Master.Database.QueryObject;
 using EZChat.Master.Database.Repositories;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +11,8 @@ namespace EZChat.Master.Database
         {
             services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>()
                     .AddSingleton<IUserRepository, UserRepository>();
+
+            services.AddSingleton<AppUserQueryObject>();
 
             return services;
         }

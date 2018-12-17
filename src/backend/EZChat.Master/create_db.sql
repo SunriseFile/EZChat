@@ -1,22 +1,21 @@
-CREATE DATABASE ezchat_db;
+CREATE DATABASE ezchat;
 
-CREATE TABLE users
+CREATE TABLE main.users
 (
-  "Id"                 BIGSERIAL    NOT NULL
+  id                  BIGSERIAL    NOT NULL
     CONSTRAINT users_pk
       PRIMARY KEY,
-  "UserName"           VARCHAR(256) NOT NULL,
-  "NormalizedUserName" VARCHAR(256) NOT NULL,
-  "FirstName"          VARCHAR(256) NOT NULL,
-  "LastName"           VARCHAR(256),
-  "PasswordHash"       TEXT         NOT NULL
+  username            VARCHAR(256) NOT NULL,
+  normalized_username VARCHAR(256) NOT NULL,
+  display_name        VARCHAR(256) NOT NULL,
+  password_hash       TEXT         NOT NULL
 );
 
 CREATE UNIQUE INDEX users_id_uindex
-  ON users ("Id");
+  ON main.users (id);
 
-CREATE UNIQUE INDEX users_normalizedusername_uindex
-  ON users ("NormalizedUserName");
+CREATE UNIQUE INDEX users_normalized_username_uindex
+  ON main.users (normalized_username);
 
 CREATE UNIQUE INDEX users_username_uindex
-  ON users ("UserName");
+  ON main.users (username);
