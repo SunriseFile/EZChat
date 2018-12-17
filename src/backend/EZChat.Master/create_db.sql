@@ -1,6 +1,6 @@
 CREATE DATABASE ezchat;
 
-CREATE TABLE main.users
+CREATE TABLE users
 (
   id                  BIGSERIAL    NOT NULL
     CONSTRAINT users_pk
@@ -12,10 +12,10 @@ CREATE TABLE main.users
 );
 
 CREATE UNIQUE INDEX users_id_uindex
-  ON main.users (id);
+  ON users (id);
 
 CREATE UNIQUE INDEX users_normalized_username_uindex
-  ON main.users (normalized_username);
+  ON users (normalized_username);
 
 CREATE UNIQUE INDEX users_username_uindex
-  ON main.users (username);
+  ON users (username);
