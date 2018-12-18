@@ -13,41 +13,62 @@ namespace EZChat.Master
     {
         public static void Main(string[] args)
         {
-            BuildWebHost().Run();
-        }
+            var config = CreateConfiguration();
 
-        private static IWebHost BuildWebHost()
-        {
-            return new WebHostBuilder().UseContentRoot(Directory.GetCurrentDirectory())
-                                       .UseKestrel()
-                                       .UseStartup<Startup>()
-                                       .ConfigureAppConfiguration(ConfigureConfiguration())
-                                       .UseSerilog(ConfigureLogger())
-                                       .Build();
-        }
+            ConfigureLogger(config);
 
-        private static Action<WebHostBuilderContext, IConfigurationBuilder> ConfigureConfiguration()
-        {
-            return (context, config) =>
+            try
             {
-                var env = context.HostingEnvironment;
-
-                config.AddJsonFile("appsettings.json", false, false)
-                      .AddJsonFile($"appsettings.{env.EnvironmentName}.json", false, false);
-            };
+                Log.Information("Starting application...");
+                BuildWebHost(config).Run();
+            }
+            catch (Exception e)
+            {
+                Log.Fatal(e, "Application terminated unexpectedly");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
-        private static Action<WebHostBuilderContext, LoggerConfiguration> ConfigureLogger()
+        private static IWebHost BuildWebHost(IConfiguration config)
         {
-            return (context, logger) =>
+            return new WebHostBuilder()
+                   .UseKestrel()
+                   .UseStartup<Startup>()
+                   .UseConfiguration(config)
+                   .UseSerilog()
+                   .Build();
+        }
+
+        private static IConfiguration CreateConfiguration()
+        {
+            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var appsettings = "appsettings";
+
+            if (string.IsNullOrWhiteSpace(env))
             {
-                logger.MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-                      .MinimumLevel.Override("System", LogEventLevel.Warning)
-                      .Enrich.FromLogContext()
-                      .WriteTo.Console()
-                      .WriteTo.RollingFile("logs/events-{Date}.log")
-                      .ReadFrom.Configuration(context.Configuration);
-            };
+                throw new Exception("Environment variable ASPNETCORE_ENVIRONMENT is required");
+            }
+
+            return new ConfigurationBuilder()
+                   .SetBasePath(Directory.GetCurrentDirectory())
+                   .AddJsonFile($"{appsettings}.json", false, false)
+                   .AddJsonFile($"{appsettings}.{env}.json", false, false)
+                   .Build();
+        }
+
+        private static void ConfigureLogger(IConfiguration config)
+        {
+            Log.Logger = new LoggerConfiguration()
+                         .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                         .MinimumLevel.Override("System", LogEventLevel.Warning)
+                         .Enrich.FromLogContext()
+                         .WriteTo.Console()
+                         .WriteTo.RollingFile("logs/events-{Date}.log")
+                         .ReadFrom.Configuration(config)
+                         .CreateLogger();
         }
     }
 }

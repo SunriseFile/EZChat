@@ -1,4 +1,5 @@
 using System;
+using System.Security.Claims;
 using System.Text;
 
 using EZChat.Master.Identity.Models;
@@ -77,7 +78,8 @@ namespace EZChat.Master.Identity
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtBearer:Key"])),
 
-                    RequireExpirationTime = true
+                    RequireExpirationTime = true,
+                    NameClaimType = ClaimTypes.NameIdentifier,
                 };
             };
         }

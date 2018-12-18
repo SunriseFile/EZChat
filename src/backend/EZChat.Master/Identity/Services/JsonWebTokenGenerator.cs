@@ -33,7 +33,6 @@ namespace EZChat.Master.Identity.Services
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                new Claim(ClaimTypes.Name, user.UserName),
             };
 
             var token = new JwtSecurityToken(issuer: _issuer,
