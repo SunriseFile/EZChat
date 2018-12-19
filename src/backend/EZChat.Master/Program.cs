@@ -48,6 +48,7 @@ namespace EZChat.Master
         private static IWebHost BuildWebHost(IConfiguration config)
         {
             return new WebHostBuilder()
+                   .UseContentRoot(Directory.GetCurrentDirectory())
                    .UseKestrel()
                    .UseStartup<Startup>()
                    .UseConfiguration(config)

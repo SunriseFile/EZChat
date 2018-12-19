@@ -57,7 +57,8 @@ namespace EZChat.Master
         {
             return builder => builder.AddPostgres()
                                      .WithGlobalConnectionString(_config.GetConnectionString("DefaultConnection"))
-                                     .ScanIn(typeof(Program).Assembly).For.Migrations();
+                                     .ScanIn(typeof(Program).Assembly)
+                                     .For.Migrations();
         }
     }
 }
