@@ -53,7 +53,7 @@ namespace EZChat.Master.Database.QueryObject
                    .CompileQuery();
         }
 
-        public string ById(long id)
+        public string ById(int id)
         {
             return new Query(TableName)
                    .Where(IdProp, "=", id)

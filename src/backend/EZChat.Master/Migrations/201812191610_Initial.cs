@@ -8,10 +8,10 @@ namespace EZChat.Master.Migrations
         public override void Up()
         {
             Create.Table("users")
-                  .WithColumn("id").AsInt64().PrimaryKey().Identity()
-                  .WithColumn("username").AsString(256).NotNullable().Unique()
-                  .WithColumn("normalized_username").AsString(256).NotNullable().Unique()
-                  .WithColumn("display_name").AsString(256).NotNullable()
+                  .WithColumn("id").AsInt32().PrimaryKey().Identity()
+                  .WithColumn("username").AsString(64).NotNullable().Unique()
+                  .WithColumn("normalized_username").AsString(64).NotNullable().Unique()
+                  .WithColumn("display_name").AsString(64).NotNullable()
                   .WithColumn("password_hash").AsString().NotNullable();
         }
 

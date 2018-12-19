@@ -191,9 +191,9 @@ namespace EZChat.Master.Identity.Store
                 throw new ArgumentNullException(nameof(userId));
             }
 
-            if (!long.TryParse(userId, out var id))
+            if (!int.TryParse(userId, out var id))
             {
-                throw new ArgumentException("Invalid long type", nameof(userId));
+                throw new ArgumentException("Invalid integer type", nameof(userId));
             }
 
             return await _userRepository.GetByIdAsync(id);

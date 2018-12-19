@@ -95,7 +95,7 @@ namespace EZChat.Master.Controllers
     public class RegisterModel
     {
         [Required(AllowEmptyStrings = false, ErrorMessage = "username is required")]
-        [StringLength(256)]
+        [StringLength(64)]
         public string UserName { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "password is required")]
@@ -105,7 +105,7 @@ namespace EZChat.Master.Controllers
         public string PasswordConfirm { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "display name is required")]
-        [StringLength(256)]
+        [StringLength(64)]
         public string DisplayName { get; set; }
     }
 }

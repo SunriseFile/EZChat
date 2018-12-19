@@ -18,12 +18,12 @@ namespace EZChat.Master.Database.Repositories
             _queryObject = queryObject;
         }
 
-        public async Task<long> InsertAsync(AppUser user)
+        public async Task<int> InsertAsync(AppUser user)
         {
             using (var connection = await _factory.OpenAsync())
             {
                 var sql = _queryObject.Insert(user);
-                return await connection.QuerySingleAsync<long>(sql);
+                return await connection.QuerySingleAsync<int>(sql);
             }
         }
 
@@ -45,7 +45,7 @@ namespace EZChat.Master.Database.Repositories
             }
         }
 
-        public async Task<AppUser> GetByIdAsync(long id)
+        public async Task<AppUser> GetByIdAsync(int id)
         {
             using (var connection = await _factory.OpenAsync())
             {
