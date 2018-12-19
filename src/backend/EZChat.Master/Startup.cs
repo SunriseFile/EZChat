@@ -3,6 +3,8 @@
 using EZChat.Master.Database;
 using EZChat.Master.Identity;
 
+using FluentMigrator.Runner;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +30,9 @@ namespace EZChat.Master
                     .AddEzChatIdentity(_config);
 
             services.AddMvc(ConfigureMvc());
+
+            services.AddFluentMigratorCore()
+                    .ConfigureRunner(ConfigureMigrationRunner());
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -46,6 +51,13 @@ namespace EZChat.Master
 
                 options.Filters.Add(new AuthorizeFilter(policy));
             };
+        }
+
+        private Action<IMigrationRunnerBuilder> ConfigureMigrationRunner()
+        {
+            return builder => builder.AddPostgres()
+                                     .WithGlobalConnectionString(_config.GetConnectionString("DefaultConnection"))
+                                     .ScanIn(typeof(Program).Assembly).For.Migrations();
         }
     }
 }

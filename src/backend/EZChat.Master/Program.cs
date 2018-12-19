@@ -1,8 +1,11 @@
 ﻿using System;
 using System.IO;
 
+using FluentMigrator.Runner;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 using Serilog;
 using Serilog.Events;
@@ -19,8 +22,18 @@ namespace EZChat.Master
 
             try
             {
+                var host = BuildWebHost(config);
+
                 Log.Information("Starting application...");
-                BuildWebHost(config).Run();
+
+                using (var scope = host.Services.CreateScope())
+                {
+                    scope.ServiceProvider
+                         .GetRequiredService<IMigrationRunner>()
+                         .MigrateUp();
+                }
+
+                host.Run();
             }
             catch (Exception e)
             {
