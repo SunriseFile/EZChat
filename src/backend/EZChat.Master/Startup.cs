@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 using EZChat.Master.Database;
 using EZChat.Master.Identity;
@@ -12,6 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace EZChat.Master
 {
@@ -33,10 +36,22 @@ namespace EZChat.Master
 
             services.AddFluentMigratorCore()
                     .ConfigureRunner(ConfigureMigrationRunner());
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Info
+                {
+                    Title = "EZChat",
+                    Version = "v1"
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseSwagger()
+               .UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "EZChat API"));
+
             app.UseAuthentication()
                .UseMvc();
         }
@@ -57,7 +72,7 @@ namespace EZChat.Master
         {
             return builder => builder.AddPostgres()
                                      .WithGlobalConnectionString(_config.GetConnectionString("DefaultConnection"))
-                                     .ScanIn(typeof(Program).Assembly)
+                                     .ScanIn(Assembly.GetExecutingAssembly())
                                      .For.Migrations();
         }
     }

@@ -12,13 +12,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace EZChat.Master.Controllers
 {
     [Route("auth")]
-    public class AuthController : Controller
+    public class AuthenticationController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IJsonWebTokenGenerator _tokenGenerator;
 
-        public AuthController(UserManager<AppUser> userManager,
+        public AuthenticationController(UserManager<AppUser> userManager,
                               SignInManager<AppUser> signInManager,
                               IJsonWebTokenGenerator tokenGenerator)
         {
