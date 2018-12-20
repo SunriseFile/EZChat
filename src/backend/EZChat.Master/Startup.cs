@@ -3,6 +3,7 @@ using System.Reflection;
 
 using EZChat.Master.Database;
 using EZChat.Master.Identity;
+using EZChat.Master.Swagger;
 
 using FluentMigrator.Runner;
 
@@ -13,8 +14,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-using Swashbuckle.AspNetCore.Swagger;
 
 namespace EZChat.Master
 {
@@ -37,22 +36,13 @@ namespace EZChat.Master
             services.AddFluentMigratorCore()
                     .ConfigureRunner(ConfigureMigrationRunner());
 
-            services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new Info
-                {
-                    Title = "EZChat",
-                    Version = "v1"
-                });
-            });
+            services.AddEzChatSwagger();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseSwagger()
-               .UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "EZChat API"));
-
-            app.UseAuthentication()
+            app.UseEzChatSwagger()
+               .UseAuthentication()
                .UseMvc();
         }
 

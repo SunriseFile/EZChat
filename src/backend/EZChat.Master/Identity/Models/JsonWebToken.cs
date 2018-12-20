@@ -1,3 +1,5 @@
+using System;
+
 using Newtonsoft.Json;
 
 namespace EZChat.Master.Identity.Models
@@ -6,5 +8,8 @@ namespace EZChat.Master.Identity.Models
     {
         [JsonProperty("access_token")]
         public string AccessToken { get; set; }
+
+        [JsonProperty("expires_in")]
+        public DateTime ExpiresIn { get; set; }
     }
 }

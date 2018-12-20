@@ -35,15 +35,18 @@ namespace EZChat.Master.Identity.Services
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
             };
 
+            var expires = DateTime.UtcNow.AddDays(_expiresDays);
+
             var token = new JwtSecurityToken(issuer: _issuer,
                                              audience: _issuer,
                                              claims: claims,
                                              signingCredentials: _credentials,
-                                             expires: DateTime.UtcNow.AddDays(_expiresDays));
+                                             expires: expires);
 
             return new JsonWebToken
             {
-                AccessToken = new JwtSecurityTokenHandler().WriteToken(token)
+                AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
+                ExpiresIn = expires
             };
         }
     }
