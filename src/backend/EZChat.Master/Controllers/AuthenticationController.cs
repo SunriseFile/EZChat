@@ -40,14 +40,14 @@ namespace EZChat.Master.Controllers
 
             if (user == null)
             {
-                return BadRequest(new ErrorResponse("Invalid username or password"));
+                return BadRequest(new ErrorResponse("Invalid username or password", ErrorResponseCode.UsernamePasswordInvalid));
             }
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
 
             if (!result.Succeeded)
             {
-                return BadRequest(new ErrorResponse("Invalid username or password"));
+                return BadRequest(new ErrorResponse("Invalid username or password", ErrorResponseCode.UsernamePasswordInvalid));
             }
 
             var token = _tokenGenerator.Generate(user);
@@ -85,27 +85,28 @@ namespace EZChat.Master.Controllers
 
     public class LoginModel
     {
-        [Required(AllowEmptyStrings = false, ErrorMessage = "username is required")]
+        [Required(ErrorMessage = "username is required")]
         public string UserName { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "password is required")]
+        [Required(ErrorMessage = "password is required")]
         public string Password { get; set; }
     }
 
     public class RegisterModel
     {
-        [Required(AllowEmptyStrings = false, ErrorMessage = "username is required")]
-        [StringLength(64)]
+        [Required(ErrorMessage = "username is required")]
+        [StringLength(64, ErrorMessage = "username cannot be longer than 64 characters")]
         public string UserName { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "password is required")]
+        [Required(ErrorMessage = "password is required")]
+        [MinLength(6, ErrorMessage = "password cannot be less than 6 characters")]
         public string Password { get; set; }
 
         [Compare(nameof(Password), ErrorMessage = "passwords do not match")]
         public string PasswordConfirm { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "display name is required")]
-        [StringLength(64)]
+        [Required(ErrorMessage = "display name is required")]
+        [StringLength(64, ErrorMessage = "display name cannot be longer than 64 characters")]
         public string DisplayName { get; set; }
     }
 }

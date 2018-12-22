@@ -22,9 +22,9 @@ namespace EZChat.Master
 
             try
             {
-                var host = BuildWebHost(config);
-
                 Log.Information("Starting application...");
+
+                var host = BuildWebHost(config);
 
                 using (var scope = host.Services.CreateScope())
                 {

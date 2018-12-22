@@ -7,20 +7,24 @@ namespace EZChat.Master.Controllers.Models
 {
     public class ErrorResponse
     {
-        public string Error { get; set; }
+        public ErrorResponseCode Code { get; }
+        public string Error { get; }
 
-        public ErrorResponse(string error)
+        public ErrorResponse(string error, ErrorResponseCode code = ErrorResponseCode.UnknownError)
         {
+            Code = code;
             Error = error;
         }
 
         public ErrorResponse(IdentityResult identityResult)
         {
+            Code = ErrorResponseCode.IdentityResultInvalid;
             Error = identityResult.Errors.FirstOrDefault()?.Description;
         }
 
         public ErrorResponse(ModelStateDictionary modelState)
         {
+            Code = ErrorResponseCode.ModelStateInvalid;
             Error = modelState.Values.FirstOrDefault()?.Errors.FirstOrDefault()?.ErrorMessage;
         }
     }
