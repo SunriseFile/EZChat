@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Reflection;
 
 using EZChat.Master.Database;
+using EZChat.Master.DataProtection;
 using EZChat.Master.Identity;
+using EZChat.Master.Middleware;
+using EZChat.Master.Migrations;
 using EZChat.Master.Swagger;
-
-using FluentMigrator.Runner;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -29,19 +29,18 @@ namespace EZChat.Master
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddEzChatDatabase()
-                    .AddEzChatIdentity(_config);
+                    .AddEzChatIdentity(_config)
+                    .AddEzChatMigrations(_config)
+                    .AddEzChatSwagger()
+                    .AddEzChatDataProtection(_config);
 
             services.AddMvc(ConfigureMvc());
-
-            services.AddFluentMigratorCore()
-                    .ConfigureRunner(ConfigureMigrationRunner());
-
-            services.AddEzChatSwagger();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseEzChatSwagger()
+               .UseMiddleware<UnhandledExceptionMiddleware>()
                .UseAuthentication()
                .UseMvc();
         }
@@ -56,14 +55,6 @@ namespace EZChat.Master
 
                 options.Filters.Add(new AuthorizeFilter(policy));
             };
-        }
-
-        private Action<IMigrationRunnerBuilder> ConfigureMigrationRunner()
-        {
-            return builder => builder.AddPostgres()
-                                     .WithGlobalConnectionString(_config.GetConnectionString("DefaultConnection"))
-                                     .ScanIn(Assembly.GetExecutingAssembly())
-                                     .For.Migrations();
         }
     }
 }

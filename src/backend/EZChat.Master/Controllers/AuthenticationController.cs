@@ -40,14 +40,14 @@ namespace EZChat.Master.Controllers
 
             if (user == null)
             {
-                return BadRequest(new ErrorResponse("Invalid username or password", ErrorResponseCode.UsernamePasswordInvalid));
+                return BadRequest(new ErrorResponse("Invalid username or password"));
             }
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
 
             if (!result.Succeeded)
             {
-                return BadRequest(new ErrorResponse("Invalid username or password", ErrorResponseCode.UsernamePasswordInvalid));
+                return BadRequest(new ErrorResponse("Invalid username or password"));
             }
 
             var token = _tokenGenerator.Generate(user);

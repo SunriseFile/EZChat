@@ -16,6 +16,15 @@ namespace EZChat.Master.Database
             _connectionString = config.GetConnectionString("DefaultConnection");
         }
 
+        public IDbConnection Open()
+        {
+            var connection = new NpgsqlConnection(_connectionString);
+
+            connection.Open();
+
+            return connection;
+        }
+
         public async Task<IDbConnection> OpenAsync()
         {
             var connection = new NpgsqlConnection(_connectionString);
